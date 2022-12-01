@@ -4,6 +4,7 @@ int main(void)
 {
 	auto data = load_file("../../Data/data.txt");
 
+	Timer timer;
 	int32_t floor = 0;
 	for(size_t i = 0; i < data.size(); ++i)
 	{
