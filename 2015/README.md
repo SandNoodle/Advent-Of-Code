@@ -1,7 +1,7 @@
 # Advent of Code 2015
 
 - [x] Day 1  - Not Quite Lisp
-- [ ] Day 2  - 
+- [x] Day 2  - I Was Told There Would Be No Math
 - [ ] Day 3  - 
 - [ ] Day 4  - 
 - [ ] Day 5  - 

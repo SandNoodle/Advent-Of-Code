@@ -31,11 +31,9 @@ std::string load_file(std::filesystem::path path);
 
 /* --- Parsing --- */
 template<typename T>
-std::vector<T> create_vector(const std::string& data, std::string delimiter,
+std::vector<T> create_vector(const std::string& data, char delimiter,
 		bool allow_blanks = true);
 
-template<typename T, typename Comparator>
-size_t get_index_of_element(const std::vector<T> data, T value, Comparator comp);
 template<typename T>
 size_t get_index_of_max_element(const std::vector<T> data, T value);
 template<typename T>
@@ -72,29 +70,19 @@ std::string load_file(std::filesystem::path path)
 }
 
 template<typename T>
-std::vector<T> create_vector(const std::string& data, std::string delimiter, bool allow_blanks)
+std::vector<T> create_vector(const std::string& data, char delimiter, bool allow_blanks)
 {
 	std::vector<T> out;
 
-/* 	auto line = std::string(); */
-/* 	while(std::getline(data, line, delimiter)) */
-/* 	{ */
-/* 		if(allow_blanks || line.size() > 0) */
-/* 			out.push_back(line); */
-/* 	} */
+	std::string line = std::string();
+	std::stringstream ss(data);
+	while(std::getline(ss, line, delimiter))
+	{
+		if(allow_blanks || line.size() > 0)
+			out.push_back(line);
+	}
 
 	return out;
-}
-
-template<typename T, typename Comparator>
-size_t get_index_of_element(const std::vector<T> data, T value, Comparator comp)
-{
-	static_assert(std::is_integral_v<T>, "Element type is not integral.");
-
-	/* auto it = std::ranges::; */
-
-	/* 	return std::distance(data.begin(), it); */
-
 }
 
 template<typename T>
