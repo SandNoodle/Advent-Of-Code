@@ -30,8 +30,7 @@
 std::string load_file(std::filesystem::path path);
 
 /* --- Parsing --- */
-template<typename T>
-std::vector<T> create_vector(const std::string& data, char delimiter,
+std::vector<std::string> create_vector(const std::string& data, char delimiter,
 		bool allow_blanks = true);
 
 template<typename T>
@@ -69,10 +68,9 @@ std::string load_file(std::filesystem::path path)
 	return file_data;
 }
 
-template<typename T>
-std::vector<T> create_vector(const std::string& data, char delimiter, bool allow_blanks)
+std::vector<std::string> create_vector(const std::string& data, char delimiter, bool allow_blanks)
 {
-	std::vector<T> out;
+	std::vector<std::string> out;
 
 	std::string line = std::string();
 	std::stringstream ss(data);
