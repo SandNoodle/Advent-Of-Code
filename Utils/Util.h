@@ -13,6 +13,7 @@
 #include <functional>
 #include <algorithm>
 
+#include <regex>
 #include <chrono>
 #include <type_traits>
 
@@ -32,6 +33,12 @@ std::string load_file(std::filesystem::path path) noexcept;
 /* --- Parsing --- */
 std::vector<std::string> create_vector(const std::string& data,
 		char delimiter = '\n', bool allow_blanks = true) noexcept;
+
+std::vector<std::string> create_vector(const std::string& data,
+		std::string pattern) noexcept;
+
+std::vector<int32_t> convert_to_int_vector(const std::vector<std::string>&
+		vector) noexcept;
 
 template<typename T>
 size_t get_index_of_max_element(const std::vector<T> data, T value) noexcept;
@@ -88,6 +95,25 @@ std::vector<std::string> create_vector(const std::string& data,
 			out.push_back(line);
 	}
 
+	return out;
+}
+
+std::vector<std::string> create_vector(const std::string& data,
+		std::string pattern) noexcept
+{
+	const std::regex reg(pattern);
+	return { std::sregex_token_iterator(data.begin(), data.end(), reg, -1),
+		std::sregex_token_iterator()};
+}
+
+std::vector<int32_t> convert_to_int_vector(const std::vector<std::string>&
+		vector) noexcept
+{
+	std::vector<int32_t> out;
+	out.reserve(vector.size());
+
+	std::ranges::for_each(vector, [&out](const auto& v)
+			{ out.push_back(to_number(v)); });
 	return out;
 }
 
