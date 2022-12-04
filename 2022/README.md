@@ -3,7 +3,7 @@
 - [x] Day 1  - Calorie Counting
 - [x] Day 2  - Rock Paper Scissors
 - [x] Day 3  - Rucksack Reorganization
-- [ ] Day 4  - 
+- [x] Day 4  - Camp Cleanup
 - [ ] Day 5  - 
 - [ ] Day 6  - 
 - [ ] Day 7  - 

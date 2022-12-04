@@ -27,30 +27,37 @@
  *************************************************************************** */
 
 /* --- Files --- */
-std::string load_file(std::filesystem::path path);
+std::string load_file(std::filesystem::path path) noexcept;
 
 /* --- Parsing --- */
-std::vector<std::string> create_vector(const std::string& data, char delimiter,
-		bool allow_blanks = true);
+std::vector<std::string> create_vector(const std::string& data,
+		char delimiter = '\n', bool allow_blanks = true) noexcept;
 
 template<typename T>
-size_t get_index_of_max_element(const std::vector<T> data, T value);
+size_t get_index_of_max_element(const std::vector<T> data, T value) noexcept;
 template<typename T>
-size_t get_index_of_min_element(const std::vector<T> data, T value);
+size_t get_index_of_min_element(const std::vector<T> data, T value) noexcept;
 
-void trim(std::string& string);
-void trim_left(std::string& string);
-void trim_right(std::string& string);
+inline int32_t to_number(const std::string& s) noexcept;
+
+inline bool is_range_overlap(int32_t x1, int32_t x2,
+		int32_t y1, int32_t y2) noexcept;
+inline bool is_range_fully_overlap(int32_t x1, int32_t x2,
+		int32_t y1, int32_t y2) noexcept;
+
+void trim(std::string& string) noexcept;
+void trim_left(std::string& string) noexcept;
+void trim_right(std::string& string) noexcept;
 
 /* --- Error checking --  */
 template<typename T, typename U>
-bool check_result(T value, U expected);
+bool check_result(T value, U expected) noexcept;
 
 /* ****************************************************************************
  * Function impl
  *************************************************************************** */
 
-std::string load_file(std::filesystem::path path)
+std::string load_file(std::filesystem::path path) noexcept
 {
 	constexpr auto read_size = std::size_t(4096);
 
@@ -68,7 +75,8 @@ std::string load_file(std::filesystem::path path)
 	return file_data;
 }
 
-std::vector<std::string> create_vector(const std::string& data, char delimiter, bool allow_blanks)
+std::vector<std::string> create_vector(const std::string& data,
+		char delimiter, bool allow_blanks) noexcept
 {
 	std::vector<std::string> out;
 
@@ -84,24 +92,41 @@ std::vector<std::string> create_vector(const std::string& data, char delimiter, 
 }
 
 template<typename T>
-size_t get_index_of_max_element(const std::vector<T> data)
+size_t get_index_of_max_element(const std::vector<T> data) noexcept
 {
 	return std::distance(data.begin(), std::ranges::max_element(data));
 }
 
 template<typename T>
-size_t get_index_of_min_element(const std::vector<T> data)
+size_t get_index_of_min_element(const std::vector<T> data) noexcept
 {
 	return std::distance(data.begin(), std::ranges::min_element(data));
 }
 
-void trim(std::string& string)
+int32_t to_number(const std::string& s) noexcept
+{
+	return std::atoi(s.c_str());
+}
+
+bool is_range_overlap(int32_t x1, int32_t y1,
+		int32_t x2, int32_t y2) noexcept
+{
+	return (std::max(x1, x2) <= std::min(y1, y2));
+}
+
+bool is_range_fully_overlap(int32_t x1, int32_t y1,
+		int32_t x2, int32_t y2) noexcept
+{
+	return ((x1 >= x2) && (y1 <= y2)) || ((x1 <= x2) && (y1 >= y2));
+}
+
+void trim(std::string& string) noexcept
 {
 	trim_left(string);
 	trim_right(string);
 }
 
-void trim_left(std::string& string)
+void trim_left(std::string& string) noexcept
 {
 	const auto trim_func = [](const auto& c){
 		return !std::isspace(c);
@@ -109,7 +134,7 @@ void trim_left(std::string& string)
 	string.erase(string.begin(), std::ranges::find_if(string, trim_func));
 }
 
-void trim_right(std::string& string)
+void trim_right(std::string& string) noexcept
 {
 	const auto trim_func = [](const auto& c){
 		return std::isspace(c);
@@ -118,7 +143,7 @@ void trim_right(std::string& string)
 }
 
 template<typename T, typename U>
-bool check_result(T value, U expected)
+bool check_result(T value, U expected) noexcept
 {
 	static_assert(std::is_integral_v<T>, "Value is not integral.");
 	static_assert(std::is_integral_v<U>, "Value is not integral.");
