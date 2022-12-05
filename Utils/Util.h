@@ -5,7 +5,9 @@
 #include <fstream>
 #include <filesystem>
 
+#include <cctype>
 #include <string>
+#include <string_view>
 
 #include <vector>
 
@@ -45,6 +47,7 @@ size_t get_index_of_max_element(const std::vector<T> data, T value) noexcept;
 template<typename T>
 size_t get_index_of_min_element(const std::vector<T> data, T value) noexcept;
 
+inline bool is_number(std::string_view s) noexcept;
 inline int32_t to_number(const std::string& s) noexcept;
 
 inline bool is_range_overlap(int32_t x1, int32_t x2,
@@ -109,11 +112,18 @@ std::vector<std::string> create_vector(const std::string& data,
 std::vector<int32_t> convert_to_int_vector(const std::vector<std::string>&
 		vector) noexcept
 {
+	auto temp_vector = vector;
 	std::vector<int32_t> out;
 	out.reserve(vector.size());
 
-	std::ranges::for_each(vector, [&out](const auto& v)
-			{ out.push_back(to_number(v)); });
+	std::ranges::for_each(temp_vector, [&out](auto& v)
+			{
+				if(is_number(v))
+				{
+					trim(v);
+					out.push_back(to_number(v));
+				}
+			});
 	return out;
 }
 
@@ -127,6 +137,13 @@ template<typename T>
 size_t get_index_of_min_element(const std::vector<T> data) noexcept
 {
 	return std::distance(data.begin(), std::ranges::min_element(data));
+}
+
+bool is_number(std::string_view s) noexcept
+{
+	auto it = s.begin();
+	while(it != s.end() && std::isdigit(*it)) ++it;
+	return !s.empty() && it == s.end();
 }
 
 int32_t to_number(const std::string& s) noexcept
