@@ -49,32 +49,15 @@ int main(void)
 	// ------------------------------------------------------------------------
 
 	Timer timer;
-
-	const auto transfer_preserve_order =
-		[] (auto& from_stack, auto& to_stack, size_t count)
-	{
-		auto temp_stack = std::stack<char>();
-
-		for(size_t i = 0; i < count; ++i)
-		{
-			temp_stack.push(from_stack.top());
-			from_stack.pop();
-		}
-
-		for(size_t i = 0; i < count; ++i)
-		{
-			to_stack.push(temp_stack.top());
-			temp_stack.pop();
-		}
-	};
-
 	const auto rearrange_stacks_function = [&](const auto& instruction)
 	{
 		auto count = instruction[0];
 		auto from_index = instruction[1] - 1;
 		auto to_index = instruction[2] - 1;
-		transfer_preserve_order(stacks[from_index], stacks[to_index], count);
+		transfer_stack_elements_preserve_order(
+				stacks[from_index], stacks[to_index], count);
 	};
+
 	std::ranges::for_each(instructions, rearrange_stacks_function);
 	auto result = std::string();
 	std::ranges::for_each(stacks, [&result](const auto& s){result += s.top();});

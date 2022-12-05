@@ -51,14 +51,12 @@ int main(void)
 	Timer timer;
 	const auto rearrange_stacks_function = [&stacks](const auto& instruction)
 	{
-		for(size_t i = 0; i < instruction[0]; ++i)
-		{
-			auto from_index = instruction[1] - 1;
-			auto to_index = instruction[2] - 1;
-			stacks[to_index].push(stacks[from_index].top());
-			stacks[from_index].pop();
-		}
+		auto count = instruction[0];
+		auto from_index = instruction[1] - 1;
+		auto to_index = instruction[2] - 1;
+		transfer_stack_elements(stacks[from_index], stacks[to_index], count);
 	};
+
 	std::ranges::for_each(instructions, rearrange_stacks_function);
 	auto result = std::string();
 	std::ranges::for_each(stacks, [&result](const auto& s){result += s.top();});

@@ -10,6 +10,7 @@
 #include <string_view>
 
 #include <vector>
+#include <stack>
 
 #include <ranges>
 #include <functional>
@@ -23,6 +24,7 @@
  * Defines
  *************************************************************************** */
 
+#define PRINT_SAME_LINE(x) std::cout << x
 #define PRINT(x) std::cout << x << std::endl
 
 /* ****************************************************************************
@@ -58,6 +60,16 @@ inline bool is_range_fully_overlap(int32_t x1, int32_t x2,
 void trim(std::string& string) noexcept;
 void trim_left(std::string& string) noexcept;
 void trim_right(std::string& string) noexcept;
+
+/* --- Stacks --- */
+template<typename T>
+void print_stack(const std::stack<T>& s) noexcept;
+template<typename T>
+inline void transfer_stack_elements(std::stack<T>&,
+		std::stack<T>&, size_t) noexcept;
+template<typename T>
+inline void transfer_stack_elements_preserve_order(std::stack<T>&,
+		std::stack<T>&, size_t) noexcept;
 
 /* --- Error checking --  */
 template<typename T, typename U>
@@ -183,6 +195,41 @@ void trim_right(std::string& string) noexcept
 		return std::isspace(c);
 	};
 	string.erase(std::ranges::find_if(string, trim_func), string.end());
+}
+
+template<typename T>
+void print_stack(const std::stack<T>& s) noexcept
+{
+	auto temp = s;
+	PRINT_SAME_LINE("STACK: [");
+	while(!temp.empty())
+	{
+		char c = temp.top();
+		temp.pop();
+		PRINT_SAME_LINE(c);
+		if(temp.size() > 0)
+			PRINT_SAME_LINE(", ");
+	}
+	PRINT_SAME_LINE("]\n");
+}
+
+template<typename T>
+void transfer_stack_elements(std::stack<T>& from,
+		std::stack<T>& to, size_t count) noexcept
+{
+	for(size_t i = 0; i < count; ++i)
+	{
+		to.push(from.top());
+		from.pop();
+	}
+}
+template<typename T>
+void transfer_stack_elements_preserve_order(std::stack<T>& from,
+		std::stack<T>& to, size_t count) noexcept
+{
+	auto temp_stack = std::stack<T>();
+	transfer_stack_elements(from, temp_stack, count);
+	transfer_stack_elements(temp_stack, to, count);
 }
 
 template<typename T, typename U>
