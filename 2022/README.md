@@ -5,8 +5,8 @@
 - [x] Day 3  - Rucksack Reorganization
 - [x] Day 4  - Camp Cleanup
 - [x] Day 5  - Supply Stacks
-- [ ] Day 6  - Tuning Trouble
-- [ ] Day 7  - 
+- [x] Day 6  - Tuning Trouble
+- [x] Day 7  - No Space Left On Device
 - [ ] Day 8  - 
 - [ ] Day 9  - 
 - [ ] Day 10 - 
